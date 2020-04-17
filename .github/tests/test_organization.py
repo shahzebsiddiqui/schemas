@@ -52,7 +52,7 @@ def test_schema_naming(tmp_path):
     outer_schema = load_schema(outer_file)
 
     for schema_name in os.listdir(root):
-        print(schema_name)
+
         if (
             schema_name in skips
             or re.search("^([.]|_)", schema_name)
