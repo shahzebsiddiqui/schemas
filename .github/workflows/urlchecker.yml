@@ -1,4 +1,4 @@
-me: Check URLs
+name: Check URLs
 
 on: [push, pull_request]
 
