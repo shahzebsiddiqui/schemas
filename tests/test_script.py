@@ -61,6 +61,7 @@ def check_valid_recipes(recipes, valids, loaded, version):
             validate(instance=content[name], schema=loaded)
             print("Testing %s from recipe %s should be valid" % (name, recipe))
 
+
 def test_script_schema():
     """This test validates schema: script-v0.0.1.schema.json"""
     repo_prefix = "https://buildtesters.github.io/schemas"
@@ -71,10 +72,18 @@ def test_script_schema():
     assert schema_file
     loaded = load_recipe(schema_file)
     # ensure load_recipe returns a dict object and not None
-    assert isinstance(loaded,dict)
+    assert isinstance(loaded, dict)
 
     # Checking schema fields
-    fields = ["$id", "$schema", "title", "type", "propertyNames", "properties", "required"]
+    fields = [
+        "$id",
+        "$schema",
+        "title",
+        "type",
+        "propertyNames",
+        "properties",
+        "required",
+    ]
     for field in fields:
         assert field in loaded
 
@@ -105,14 +114,7 @@ def test_script_schema():
         assert prop in properties
 
     # check all properties that are string types
-    for section in [
-        "type",
-        "description",
-        "shell",
-        "shebang",
-        "executor",
-        "run"
-    ]:
+    for section in ["type", "description", "shell", "shebang", "executor", "run"]:
         assert properties[section]["type"] == "string"
 
     # 'type' key takes a pattern string that must start and end with the word 'script'
@@ -127,8 +129,8 @@ def test_script_schema():
 
     assert "pattern" in properties["shell"]
     assert (
-            loaded["properties"]["shell"]["pattern"]
-            == "^(/bin/bash|/bin/sh|sh|bash|python).*"
+        loaded["properties"]["shell"]["pattern"]
+        == "^(/bin/bash|/bin/sh|sh|bash|python).*"
     )
 
     # check status object
