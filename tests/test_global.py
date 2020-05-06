@@ -32,7 +32,7 @@ def check_invalid_recipes(recipes, invalids, loaded):
     for recipe in recipes:
         assert recipe
         assert re.search("(yml|yaml)$", recipe)
-        # print(recipe)
+
         recipe_path = os.path.join(invalids, recipe)
         content = load_recipe(recipe_path)
 
