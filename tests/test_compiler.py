@@ -141,10 +141,13 @@ def test_compiler_schema():
 
     # check oneOf attribute in compiler
     assert properties["compiler"]["oneOf"]
-    assert "required" in properties["compiler"]["oneOf"][0]
-    assert "required" in properties["compiler"]["oneOf"][1]
+    for oneOf_item in properties["compiler"]["oneOf"]:
+        assert "required" in oneOf_item
+
     assert properties["compiler"]["oneOf"][0]["required"] == ["source", "gnu"]
     assert properties["compiler"]["oneOf"][1]["required"] == ["source", "intel"]
+    assert properties["compiler"]["oneOf"][2]["required"] == ["source", "pgi"]
+    assert properties["compiler"]["oneOf"][3]["required"] == ["source", "cray"]
 
     # check definition
     assert "compiler" in recipe["definitions"]
@@ -154,9 +157,28 @@ def test_compiler_schema():
     assert "type" in compiler_definition
     assert compiler_definition["type"] == "object"
     assert "properties" in compiler_definition
+
+    # check cflags
     assert "cflags" in compiler_definition["properties"]
     assert "type" in compiler_definition["properties"]["cflags"]
     assert compiler_definition["properties"]["cflags"]["type"] == "string"
+
+    # check cxxflags
+    assert "cxxflags" in compiler_definition["properties"]
+    assert "type" in compiler_definition["properties"]["cxxflags"]
+    assert compiler_definition["properties"]["cxxflags"]["type"] == "string"
+
+    # check fflags
+    assert "fflags" in compiler_definition["properties"]
+    assert "type" in compiler_definition["properties"]["fflags"]
+    assert compiler_definition["properties"]["fflags"]["type"] == "string"
+
+    # check fflags
+    assert "cppflags" in compiler_definition["properties"]
+    assert "type" in compiler_definition["properties"]["cppflags"]
+    assert compiler_definition["properties"]["cppflags"]["type"] == "string"
+
+    # check ldflags
     assert "ldflags" in compiler_definition["properties"]
     assert "type" in compiler_definition["properties"]["ldflags"]
     assert compiler_definition["properties"]["ldflags"]["type"] == "string"

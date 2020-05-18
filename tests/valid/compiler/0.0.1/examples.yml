@@ -18,3 +18,20 @@ hello_world_intel:
     source: src/hello.c
     intel:
      cflags: -O1
+
+pgi_example:
+  type: compiler
+  module:
+    -  "module purge &&  module load pgi"
+  compiler:
+    source: src/hello.c
+    pgi:
+     cflags: -O1
+     ldflags: -lm
+
+cray_example:
+  type: compiler
+  compiler:
+    source: src/hello.cpp
+    cray:
+     cxxflags: -O1
