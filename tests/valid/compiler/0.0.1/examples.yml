@@ -1,6 +1,7 @@
 version: 0.0.1
-hello_world_gnu:
+gnu_example:
   type: compiler
+  description: "gnu example using cflags"
   module:
      - "module purge && module load gcc/4.0"
      - "module purge && module load gcc/6.0"
@@ -9,8 +10,9 @@ hello_world_gnu:
     gnu:
       cflags: -O1
 
-hello_world_intel:
+intel_example:
   type: compiler
+  description: "intel example using cflags"
   module:
     -  "module purge &&  module load intel/17"
     -  "module purge &&  module load intel/18"
@@ -21,17 +23,20 @@ hello_world_intel:
 
 pgi_example:
   type: compiler
+  description: "pgi example using cxxflags, ldflags, and exec_args key"
   module:
     -  "module purge &&  module load pgi"
   compiler:
-    source: src/hello.c
+    source: src/hello.cpp
     pgi:
-     cflags: -O1
+     cxxflags: -O1
      ldflags: -lm
+     exec_args: hello world
 
 cray_example:
   type: compiler
+  description: "cray example using fflags"
   compiler:
-    source: src/hello.cpp
+    source: src/hello.f90
     cray:
-     cxxflags: -O1
+     fflags: -O1

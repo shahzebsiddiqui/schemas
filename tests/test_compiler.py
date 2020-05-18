@@ -183,6 +183,11 @@ def test_compiler_schema():
     assert "type" in compiler_definition["properties"]["ldflags"]
     assert compiler_definition["properties"]["ldflags"]["type"] == "string"
 
+    # check exec_args
+    assert "exec_args" in compiler_definition["properties"]
+    assert "type" in compiler_definition["properties"]["exec_args"]
+    assert compiler_definition["properties"]["exec_args"]["type"] == "string"
+
 
 def test_compiler_schema_examples():
 

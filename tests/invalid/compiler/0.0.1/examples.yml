@@ -115,3 +115,15 @@ test_additionalProperties_main_schema:
     gnu:
       cflags: -O1
       ldflags: -lm
+
+type_mismatch_exec_args:
+  type: compiler
+  description: "type mismatch on exec_args key"
+  module:
+  - "module purge && module load gcc/4.0"
+  compiler:
+    source: src/hello.c
+    gnu:
+      cflags: -O1
+      ldflags: -lm
+      exec_args: 1
