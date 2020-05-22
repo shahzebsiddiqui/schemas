@@ -1,14 +1,15 @@
 version: 0.0.1
 gnu_example:
   type: compiler
-  description: "gnu example using cflags"
+  description: "gnu example using cflags, exec_args"
   module:
      - "module purge && module load gcc/4.0"
      - "module purge && module load gcc/6.0"
   compiler:
+    name: gnu
     source: src/hello.c
-    gnu:
-      cflags: -O1
+    cflags: "-O1"
+    exec_args: "1 2 3"
 
 intel_example:
   type: compiler
@@ -17,9 +18,9 @@ intel_example:
     -  "module purge &&  module load intel/17"
     -  "module purge &&  module load intel/18"
   compiler:
+    name: intel
     source: src/hello.c
-    intel:
-     cflags: -O1
+    cflags: "-O1"
 
 pgi_example:
   type: compiler
@@ -28,15 +29,16 @@ pgi_example:
     -  "module purge &&  module load pgi"
   compiler:
     source: src/hello.cpp
-    pgi:
-     cxxflags: -O1
-     ldflags: -lm
-     exec_args: hello world
+    name: pgi
+    cxxflags: "-O1"
+    ldflags: "-lm"
+    exec_args: hello world
 
 cray_example:
   type: compiler
-  description: "cray example using fflags"
+  description: "cray example using fflags and cppflags"
   compiler:
+    name: cray
     source: src/hello.f90
-    cray:
-     fflags: -O1
+    fflags: "-O1"
+    cppflags: "-DFOO"
