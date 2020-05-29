@@ -23,15 +23,14 @@
       },
       "config": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "paths": {
             "type": "object",
             "properties": {
-              "get_repo_path": {
+              "clonepath": {
                 "type": "string"
               },
-              "buildspec_path": {
+              "searchpath": {
                 "type": "string"
               },
               "testdir": {
@@ -39,7 +38,8 @@
               }
             }
           }
-        }
+        },
+        "additionalProperties": false
       },
       "additionalProperties": false
   },

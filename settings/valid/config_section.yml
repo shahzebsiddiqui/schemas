@@ -5,6 +5,6 @@ executors:
     description: submit jobs on local machine
 config:
   paths:
-    get_repo_path: /tmp/buildtest/repos
-    buildspec_path: "/tmp/buildtest/repos:/home"
+    clonepath: /tmp/buildtest/repos
+    searchpath: "/tmp/buildtest/repos:/home"
     testdir: /tmp/buildtest/test

@@ -4,6 +4,7 @@ executors:
     type: local
     description: submit jobs on local machine
 config:
-  FOO: BAR
-  paths:
-    get_repo_path: /tmp
+  path:
+    clonepath: /tmp
+    searchpath: /tmp
+  FOO: 1

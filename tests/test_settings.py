@@ -87,7 +87,7 @@ def check_properties(properties):
 
     "properties" in config_path_properties
 
-    for key in ["get_repo_path", "buildspec_path", "testdir"]:
+    for key in ["searchpath", "clonepath", "testdir"]:
         assert key in config_path_properties["properties"]
         assert "type" in config_path_properties["properties"][key]
         assert config_path_properties["properties"][key]["type"] == "string"
