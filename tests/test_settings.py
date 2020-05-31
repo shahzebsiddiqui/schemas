@@ -1,25 +1,21 @@
 import json
 import os
-import pytest
 import yaml
 from jsonschema import validate
-from jsonschema.exceptions import ValidationError
 
 here = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(here)
 
 
 def load_schema(path):
-    """load a schema from file. We assume a json file
-    """
+    """load a schema from file. We assume a json file"""
     with open(path, "r") as fd:
         schema = json.loads(fd.read())
     return schema
 
 
 def load_recipe(path):
-    """load a yaml recipe file
-    """
+    """load a yaml recipe file"""
     with open(path, "r") as fd:
         content = yaml.load(fd.read(), Loader=yaml.SafeLoader)
     return content
@@ -184,10 +180,10 @@ def test_settings_examples():
     recipe = load_schema(settings_schema)
 
     valid_recipes = os.path.join(root, "settings", "valid")
-    invalid_recipes = os.path.join(root, "settings", "invalid")
 
     # check all valid recipes
     for example in os.listdir(valid_recipes):
+
         filepath = os.path.join(valid_recipes, example)
         print(f"Loading Recipe File: {filepath}")
         example_recipe = load_recipe(filepath)
@@ -195,15 +191,3 @@ def test_settings_examples():
 
         print(f"Expecting Recipe File: {filepath} to be valid")
         validate(instance=example_recipe, schema=recipe)
-
-    # check all invalid recipes
-    for example in os.listdir(invalid_recipes):
-        filepath = os.path.join(invalid_recipes, example)
-        print(f"Loading Recipe File: {filepath}")
-        example_recipe = load_recipe(filepath)
-        assert example_recipe
-
-        print(f"Expecting Recipe File: {filepath} to be invalid")
-        with pytest.raises(ValidationError) as excinfo:
-            validate(instance=example_recipe, schema=recipe)
-        print(excinfo.type, excinfo.value)
