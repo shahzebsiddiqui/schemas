@@ -179,12 +179,15 @@ def test_settings_examples():
     # load schema and ensure type is a dict
     recipe = load_schema(settings_schema)
 
-    valid_recipes = os.path.join(root, "settings", "valid")
+    valid = os.path.join(root, "settings", "valid")
+    assert valid
 
+    valid_recipes = os.listdir(valid)
+    assert valid_recipes
     # check all valid recipes
-    for example in os.listdir(valid_recipes):
+    for example in valid_recipes:
 
-        filepath = os.path.join(valid_recipes, example)
+        filepath = os.path.join(valid, example)
         print(f"Loading Recipe File: {filepath}")
         example_recipe = load_recipe(filepath)
         assert example_recipe

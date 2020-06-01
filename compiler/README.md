@@ -5,9 +5,10 @@ executable. The schema supports multiple compilers, while only one can be
 selected at a time using the `name` key. This schema is under development 
 and subject to change.
 
-# Version: 0.0.1
+# Version: 1.0
 
-The compiler schema is available at https://buildtesters.github.io/schemas/compiler/compiler-v0.0.1.schema.json
+The compiler schema is available at https://buildtesters.github.io/schemas/compiler/compiler-v1.0.schema.json
+
 
 ## Global Properties
 

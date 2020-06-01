@@ -11,6 +11,10 @@ here = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(here)
 
 
+schema_name = "script"
+schema_file = f"{schema_name}-v1.0.schema.json"
+schema_path = os.path.join(root,schema_name, schema_file)
+
 def load_schema(path):
     """load a schema from file. We assume a json file
     """
@@ -64,14 +68,12 @@ def check_valid_recipes(recipes, valids, loaded, version):
 
 
 def test_script_schema():
-    """This test validates schema: script-v0.0.1.schema.json"""
-    repo_prefix = "https://buildtesters.github.io/schemas"
-    schema_name = "script"
-    schema = "script-v0.0.1.schema.json"
-    schema_file = os.path.join(root, schema_name, schema)
+    """This test validates schema: script-v1.0.schema.json"""
+
+
     # ensure schema file exists
     assert schema_file
-    loaded = load_recipe(schema_file)
+    loaded = load_schema(schema_path)
     # ensure load_recipe returns a dict object and not None
     assert isinstance(loaded, dict)
 
@@ -89,7 +91,7 @@ def test_script_schema():
     # Checking schema fields
 
     # Check individual schema properties
-    assert loaded["$id"] == "%s/%s/%s" % (repo_prefix, schema_name, schema)
+    assert loaded["$id"] == "https://buildtesters.github.io/schemas/script/script-v1.0.schema.json"
     assert loaded["$schema"] == "http://json-schema.org/draft-07/schema#"
     assert loaded["type"] == "object"
     assert loaded["propertyNames"] == {"pattern": "^[A-Za-z_][A-Za-z0-9_]*$"}
@@ -156,43 +158,37 @@ def test_script_examples(tmp_path):
        folder. Invalid examples should be under ./invalid/script.
     """
     print("Root of testing is %s" % root)
+    print("Testing schema %s" % schema_file)
+    print ("schema_path:", schema_path)
+    loaded = load_schema(schema_path)
+    assert isinstance(loaded, dict)
 
-    schema_name = "script"
-    schema_dir = os.path.abspath(os.path.join(root, schema_name))
-    print("Testing schema %s" % schema_name)
+    # Assert is named correctly
+    print("Getting version of %s" % schema_file)
+    match = re.search(
+        "%s-v(?P<version>[0-9]{1}[.][0-9]{1})[.]schema[.]json"
+        % schema_name,
+        schema_file,
+    )
+    assert match
 
-    schemas = os.listdir(schema_dir)
-    for schema in schemas:
-        if schema.endswith("json"):
+    # Ensure we found a version
+    assert match.groups()
+    version = match["version"]
 
-            # Assert it loads with jsonschema
-            schema_file = os.path.join(schema_dir, schema)
-            loaded = load_schema(schema_file)
+    # Ensure a version folder exists with invalids
+    print("Checking that invalids exist for %s" % schema_file)
+    invalids = os.path.join(here, "invalid", schema_name, version)
+    valids = os.path.join(here, "valid", schema_name, version)
 
-            # Assert is named correctly
-            print("Getting version of %s" % schema)
-            match = re.search(
-                "%s-v(?P<version>[0-9]{1}[.][0-9]{1}[.][0-9]{1})[.]schema[.]json"
-                % schema_name,
-                schema,
-            )
-            assert match
+    assert invalids
+    assert valids
 
-            # Ensure we found a version
-            assert match.groups()
-            version = match["version"]
+    invalid_recipes = os.listdir(invalids)
+    valid_recipes = os.listdir(valids)
 
-            # Ensure a version folder exists with invalids
-            print("Checking that invalids exist for %s" % schema)
-            invalids = os.path.join(here, "invalid", schema_name, version)
-            valids = os.path.join(here, "valid", schema_name, version)
+    assert invalid_recipes
+    assert valid_recipes
 
-            assert os.path.exists(invalids)
-            invalid_recipes = os.listdir(invalids)
-            valid_recipes = os.listdir(valids)
-
-            assert invalid_recipes
-            assert valid_recipes
-
-            check_valid_recipes(valid_recipes, valids, loaded, version)
-            check_invalid_recipes(invalid_recipes, invalids, loaded, version)
+    check_valid_recipes(valid_recipes, valids, loaded, version)
+    check_invalid_recipes(invalid_recipes, invalids, loaded, version)
