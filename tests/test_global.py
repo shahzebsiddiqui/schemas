@@ -94,27 +94,21 @@ def test_global_schema():
     assert recipe["required"] == ["version"]
 
     # check propertyNames
-    assert "pattern" in recipe["propertyNames"]
     assert recipe["propertyNames"]["pattern"] == "^[A-Za-z_][A-Za-z0-9_]*$"
 
     # check properties
     properties = recipe["properties"]
-    global_properties = ["version", "maintainers"]
-    for key in global_properties:
-        assert key in properties
 
     # check version field
-    assert "type" in properties["version"]
     assert properties["version"]["type"] == "string"
 
     # check maintainers field
-    assert "type" in properties["maintainers"]
     assert properties["maintainers"]["type"] == "array"
-    assert "minItems" in properties["maintainers"]
     assert properties["maintainers"]["minItems"] == 1
+    assert properties["maintainers"]["items"]["type"] == "string"
 
     # check patternProperties
-    assert "type" in recipe["patternProperties"]["^[A-Za-z_.][A-Za-z0-9_]*$"]
+
     assert recipe["patternProperties"]["^[A-Za-z_.][A-Za-z0-9_]*$"]["type"] == [
         "object",
         "string",

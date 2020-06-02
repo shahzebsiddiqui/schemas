@@ -92,59 +92,31 @@ def test_compiler_schema():
     assert recipe["$schema"] == "http://json-schema.org/draft-07/schema#"
     assert recipe["type"] == "object"
     assert recipe["required"] == ["type", "compiler"]
-    assert "pattern" in recipe["propertyNames"]
     assert recipe["propertyNames"]["pattern"] == "^[A-Za-z_][A-Za-z0-9_]*$"
     assert recipe["additionalProperties"] == False
 
     properties = recipe["properties"]
-    properties_keys = ["type", "description", "module", "compiler"]
-    # check all keys in properties
-    for key in properties_keys:
-        assert key in properties
 
     # check type and description key and type
     for key in ["type", "description"]:
-        assert "type" in properties
         assert properties[key]["type"] == "string"
 
-    # check 'pattern' attribute in type key
-    assert "pattern" in properties["type"]
     assert properties["type"]["pattern"] == "^compiler$"
 
     # check module key
-    assert "type" in properties["module"]
     assert properties["module"]["type"] == "array"
-    assert "items" in properties["module"]
-    assert "type" in properties["module"]["items"]
     assert properties["module"]["items"]["type"] == "string"
 
-    compiler_keys = ["type", "properties", "required", "additionalProperties"]
-
-    # check compiler key
-    for key in compiler_keys:
-        assert key in properties["compiler"]
 
     assert properties["compiler"]["type"] == "object"
     assert properties["compiler"]["additionalProperties"] == False
     # check compiler properties
     assert properties["compiler"]["required"] == ["source", "name"]
 
-    string_compiler_keys = [
-        "name",
-        "source",
-        "exec_args",
-        "cflags",
-        "cxxflags",
-        "fflags",
-        "cppflags",
-        "ldflags",
-    ]
     compiler_properties = properties["compiler"]["properties"]
-    for key in string_compiler_keys:
-        assert "type" in compiler_properties[key]
+    for key in [ "name", "source", "exec_args", "cflags", "cxxflags", "fflags", "cppflags", "ldflags"]:
         assert compiler_properties[key]["type"] == "string"
 
-    "enum" in compiler_properties["name"]
     compiler_properties["name"]["enum"] == ["gnu", "intel", "pgi", "cray"]
 
 

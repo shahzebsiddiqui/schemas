@@ -88,7 +88,6 @@ def test_script_schema():
     ]
     for field in fields:
         assert field in loaded
-    # Checking schema fields
 
     # Check individual schema properties
     assert loaded["$id"] == "https://buildtesters.github.io/schemas/script/script-v1.0.schema.json"
@@ -98,57 +97,39 @@ def test_script_schema():
     assert loaded["type"] == "object"
     assert loaded["required"] == ["type", "run"]
 
-    # check all properties keys
-    found = [
-        "type",
-        "description",
-        "env",
-        "executor",
-        "shell",
-        "run",
-        "status",
-    ]
-    print(f"Checking all keys: {found} in schema 'properties'")
-    properties = loaded["properties"]
 
-    for prop in found:
-        print("Checking for property %s in %s" % (prop, schema_file))
-        assert prop in properties
+    properties = loaded["properties"]
 
     # check all properties that are string types
     for section in ["type", "description", "shell", "shebang", "executor", "run"]:
         assert properties[section]["type"] == "string"
 
-    # 'type' key takes a pattern string that must start and end with the word 'script'
     assert properties["type"]["pattern"] == "^script$"
 
-    # check all properties that are object types
+    # check env object
     assert properties["env"]["type"] == "object"
-    assert properties["status"]["type"] == "object"
+    assert properties["env"]["minItems"] == 1
+    assert properties["env"]["items"]["type"] == "object"
+    assert properties["env"]["items"]["propertyNames"]["pattern"] == "^[A-Za-z_][A-Za-z0-9_]*$"
 
-    assert "pattern" in properties["shell"]
+
     assert (
-        loaded["properties"]["shell"]["pattern"]
+        properties["shell"]["pattern"]
         == "^(/bin/bash|/bin/sh|sh|bash|python).*"
     )
 
     # check status object
+    assert properties["status"]["type"] == "object"
     status_properties = properties["status"]["properties"]
-    assert "returncode" in status_properties
-    assert "regex" in status_properties
-    # regex has required fields for stream and exp, both must be defined
-    assert "required" in status_properties["regex"]
-    # check type for returncode and regex key
     assert status_properties["returncode"]["type"] == "integer"
     assert status_properties["regex"]["type"] == "object"
 
-    status_regex_properties = status_properties["regex"]["properties"]
     # check for key 'stream' and 'exp' in regex object
-    # check type for 'stream' and 'exp' key in regex object
     for item in ["stream", "exp"]:
-        assert item in status_regex_properties
-        assert status_regex_properties[item]["type"] == "string"
+        assert item in status_properties["regex"]["properties"]
+        assert status_properties["regex"]["properties"][item]["type"] == "string"
 
+    status_properties["regex"]["properties"]["stream"]["enum"] == ["stdout", "stderr"]
 
 def test_script_examples(tmp_path):
     """the script test_organization is responsible for all the schemas
