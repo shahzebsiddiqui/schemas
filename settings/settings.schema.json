@@ -110,6 +110,7 @@
           "variables": {"$ref":  "#/definitions/env"},
           "modules": {"$ref":  "#/definitions/modules"}
         },
+        "required": ["host","user","identity_file"],
         "additionalProperties": false
       }
     }

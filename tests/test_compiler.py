@@ -107,14 +107,22 @@ def test_compiler_schema():
     assert properties["module"]["type"] == "array"
     assert properties["module"]["items"]["type"] == "string"
 
-
     assert properties["compiler"]["type"] == "object"
     assert properties["compiler"]["additionalProperties"] == False
     # check compiler properties
     assert properties["compiler"]["required"] == ["source", "name"]
 
     compiler_properties = properties["compiler"]["properties"]
-    for key in [ "name", "source", "exec_args", "cflags", "cxxflags", "fflags", "cppflags", "ldflags"]:
+    for key in [
+        "name",
+        "source",
+        "exec_args",
+        "cflags",
+        "cxxflags",
+        "fflags",
+        "cppflags",
+        "ldflags",
+    ]:
         assert compiler_properties[key]["type"] == "string"
 
     compiler_properties["name"]["enum"] == ["gnu", "intel", "pgi", "cray"]

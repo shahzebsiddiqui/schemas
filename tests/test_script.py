@@ -13,7 +13,8 @@ root = os.path.dirname(here)
 
 schema_name = "script"
 schema_file = f"{schema_name}-v1.0.schema.json"
-schema_path = os.path.join(root,schema_name, schema_file)
+schema_path = os.path.join(root, schema_name, schema_file)
+
 
 def load_schema(path):
     """load a schema from file. We assume a json file
@@ -70,7 +71,6 @@ def check_valid_recipes(recipes, valids, loaded, version):
 def test_script_schema():
     """This test validates schema: script-v1.0.schema.json"""
 
-
     # ensure schema file exists
     assert schema_file
     loaded = load_schema(schema_path)
@@ -90,13 +90,15 @@ def test_script_schema():
         assert field in loaded
 
     # Check individual schema properties
-    assert loaded["$id"] == "https://buildtesters.github.io/schemas/script/script-v1.0.schema.json"
+    assert (
+        loaded["$id"]
+        == "https://buildtesters.github.io/schemas/script/script-v1.0.schema.json"
+    )
     assert loaded["$schema"] == "http://json-schema.org/draft-07/schema#"
     assert loaded["type"] == "object"
     assert loaded["propertyNames"] == {"pattern": "^[A-Za-z_][A-Za-z0-9_]*$"}
     assert loaded["type"] == "object"
     assert loaded["required"] == ["type", "run"]
-
 
     properties = loaded["properties"]
 
@@ -110,13 +112,12 @@ def test_script_schema():
     assert properties["env"]["type"] == "object"
     assert properties["env"]["minItems"] == 1
     assert properties["env"]["items"]["type"] == "object"
-    assert properties["env"]["items"]["propertyNames"]["pattern"] == "^[A-Za-z_][A-Za-z0-9_]*$"
-
-
     assert (
-        properties["shell"]["pattern"]
-        == "^(/bin/bash|/bin/sh|sh|bash|python).*"
+        properties["env"]["items"]["propertyNames"]["pattern"]
+        == "^[A-Za-z_][A-Za-z0-9_]*$"
     )
+
+    assert properties["shell"]["pattern"] == "^(/bin/bash|/bin/sh|sh|bash|python).*"
 
     # check status object
     assert properties["status"]["type"] == "object"
@@ -131,6 +132,7 @@ def test_script_schema():
 
     status_properties["regex"]["properties"]["stream"]["enum"] == ["stdout", "stderr"]
 
+
 def test_script_examples(tmp_path):
     """the script test_organization is responsible for all the schemas
        in the root of the repository, under <schema>/examples.
@@ -140,15 +142,14 @@ def test_script_examples(tmp_path):
     """
     print("Root of testing is %s" % root)
     print("Testing schema %s" % schema_file)
-    print ("schema_path:", schema_path)
+    print("schema_path:", schema_path)
     loaded = load_schema(schema_path)
     assert isinstance(loaded, dict)
 
     # Assert is named correctly
     print("Getting version of %s" % schema_file)
     match = re.search(
-        "%s-v(?P<version>[0-9]{1}[.][0-9]{1})[.]schema[.]json"
-        % schema_name,
+        "%s-v(?P<version>[0-9]{1}[.][0-9]{1})[.]schema[.]json" % schema_name,
         schema_file,
     )
     assert match

@@ -11,7 +11,8 @@ root = os.path.dirname(here)
 
 schema_name = "global"
 schema_file = f"{schema_name}.schema.json"
-schema_path = os.path.join(root,schema_name, schema_file)
+schema_path = os.path.join(root, schema_name, schema_file)
+
 
 def load_schema(path):
     """load a schema from file. We assume a json file

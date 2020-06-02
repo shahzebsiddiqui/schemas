@@ -64,11 +64,20 @@ def check_properties(properties):
         assert executor_properties[key]["type"] == "object"
         assert executor_properties[key]["patternProperties"]["^.*$"]
         if key == "local":
-            assert executor_properties[key]["patternProperties"]["^.*$"]["$ref"] == "#/definitions/local"
+            assert (
+                executor_properties[key]["patternProperties"]["^.*$"]["$ref"]
+                == "#/definitions/local"
+            )
         elif key == "slurm":
-            assert executor_properties[key]["patternProperties"]["^.*$"]["$ref"] == "#/definitions/slurm"
+            assert (
+                executor_properties[key]["patternProperties"]["^.*$"]["$ref"]
+                == "#/definitions/slurm"
+            )
         else:
-            assert executor_properties[key]["patternProperties"]["^.*$"]["$ref"] == "#/definitions/ssh"
+            assert (
+                executor_properties[key]["patternProperties"]["^.*$"]["$ref"]
+                == "#/definitions/ssh"
+            )
 
     # check config property
     assert "config" in properties
@@ -87,7 +96,6 @@ def check_properties(properties):
     config_path_properties = config_properties["paths"]
     assert config_path_properties["type"] == "object"
 
-
     for key in ["prefix", "logdir", "searchpath", "clonepath", "testdir"]:
         assert config_path_properties["properties"][key]["type"] == "string"
 
@@ -98,7 +106,10 @@ def check_definitions(definitions):
     assert definitions["env"]["type"] == "object"
     assert definitions["env"]["minItems"] == 1
     assert definitions["env"]["items"]["type"] == "object"
-    assert definitions["env"]["items"]["propertyNames"]["pattern"] == "^[A-Za-z_][A-Za-z0-9_]*$"
+    assert (
+        definitions["env"]["items"]["propertyNames"]["pattern"]
+        == "^[A-Za-z_][A-Za-z0-9_]*$"
+    )
     # ------------------ check 'local' object ----------------------
     assert "local" in definitions
     assert definitions["local"]["type"] == "object"
@@ -139,13 +150,18 @@ def check_definitions(definitions):
     assert "ssh" in definitions
     assert definitions["ssh"]["type"] == "object"
     assert definitions["ssh"]["additionalProperties"] == False
+    assert definitions["ssh"]["required"] == ["host", "user", "identity_file"]
     # all keys are string types
     for key in ["description", "host", "user", "identity_file"]:
         assert definitions["ssh"]["properties"][key]["type"] == "string"
 
-    assert definitions["ssh"]["properties"]["environment"]["$ref"] == "#/definitions/env"
+    assert (
+        definitions["ssh"]["properties"]["environment"]["$ref"] == "#/definitions/env"
+    )
     assert definitions["ssh"]["properties"]["variables"]["$ref"] == "#/definitions/env"
-    assert definitions["ssh"]["properties"]["modules"]["$ref"] == "#/definitions/modules"
+    assert (
+        definitions["ssh"]["properties"]["modules"]["$ref"] == "#/definitions/modules"
+    )
 
 
 def test_settings_schema():
