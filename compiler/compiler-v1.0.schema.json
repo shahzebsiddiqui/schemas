@@ -62,7 +62,7 @@
       "type": "object",
       "properties": {
         "launcher": { "type": "string" },
-        "exec_args": { "type": "string" }
+        "args": { "type": "string" }
       },
       "additionalProperties": false
     }

@@ -155,7 +155,7 @@ def test_compiler_schema():
     run_properties = properties["run"]["properties"]
     assert properties["run"]["type"] == "object"
     assert properties["run"]["additionalProperties"] == False
-    for key in ["exec_args", "launcher"]:
+    for key in ["args", "launcher"]:
         assert run_properties[key]["type"] == "string"
 
 def test_compiler_examples():

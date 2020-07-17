@@ -27,7 +27,7 @@ buildspecs:
   pgi_example:
     executor: local.bash
     type: compiler
-    description: "pgi example using cxxflags, ldflags, and exec_args key"
+    description: "pgi example using cxxflags, ldflags key"
     module:
       -  "module purge &&  module load pgi"
     build:
@@ -75,7 +75,7 @@ buildspecs:
       name: gnu
       cxx: g++
 
-  exec_args:
+  args_example:
     type: compiler
     description: Launcher example
     executor: local.bash
@@ -83,7 +83,7 @@ buildspecs:
       source: "src/hello.cpp"
       name: gnu
     run:
-      exec_args: "1 2 4"
+      args: "1 2 4"
 
   mpi_launcher_example:
     type: compiler

@@ -123,10 +123,10 @@ buildspecs:
       cflags: "-O1"
       ldflags: "-lm"
 
-  type_mismatch_exec_args:
+  type_mismatch_args:
     executor: local.bash
     type: compiler
-    description: "type mismatch on exec_args key"
+    description: "type mismatch on args key"
     module:
     - "module purge && module load gcc/4.0"
     build:
@@ -136,4 +136,4 @@ buildspecs:
       ldflags: "-lm"
 
     run:
-      exec_args: 1
+      args: 1
