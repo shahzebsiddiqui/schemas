@@ -58,6 +58,7 @@ def check_valid_recipes(recipes, valids, loaded):
         validate(instance=content, schema=loaded)
         print("Recipe File: %s should be valid" % recipe_path)
 
+
 def test_global_examples():
     """This validates all valid/invalid examples for global schema"""
 

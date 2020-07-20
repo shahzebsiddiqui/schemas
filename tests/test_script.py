@@ -68,6 +68,7 @@ def check_valid_recipes(recipes, valids, loaded, version):
             validate(instance=content["buildspecs"][name], schema=loaded)
             print("Testing %s from recipe %s should be valid" % (name, recipe))
 
+
 def test_script_examples(tmp_path):
     """the script test_organization is responsible for all the schemas
        in the root of the repository, under <schema>/examples.

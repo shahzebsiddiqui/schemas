@@ -20,6 +20,7 @@ def load_recipe(path):
         content = yaml.load(fd.read(), Loader=yaml.SafeLoader)
     return content
 
+
 def test_settings_examples():
     settings_schema = os.path.join(root, "settings", "settings.schema.json")
     # load schema and ensure type is a dict
